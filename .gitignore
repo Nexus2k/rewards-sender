@@ -1,0 +1,5 @@
+.devcontainer/
+dist/
+node_modules/
+config/main.yaml
+config/secret.json
