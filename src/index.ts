@@ -58,6 +58,7 @@ const start = async (args: { config: string }): Promise<void> => {
   const dm = Number(balance.free) / base
   log.debug(`Account ${account.address} has free balance of: ${dm} ${api.registry.chainTokens}`)
 
+  const existentialDeposit = Number(api.consts.balances.existentialDeposit) / base;
   // Sending funds to addresses
   const share = parseFloat(config.rewardsDestination.mainDestinationShare) / 100;
   log.debug(`Share split: ${share * 100}%`)
@@ -65,6 +66,10 @@ const start = async (args: { config: string }): Promise<void> => {
   const dustBalance = (Number(balance.free)/ base) * (1-share);
   log.debug(`Will send ${mainBalance} ${api.registry.chainTokens} to ${config.rewardsDestination.mainDestinationAddress}`)
   log.debug(`Will send ${dustBalance} ${api.registry.chainTokens} (minus fees) to ${config.rewardsDestination.dustDestinationAddress}`)
+  if(mainBalance < existentialDeposit || dustBalance < existentialDeposit) {
+    log.debug(`Warning, sending less than the Existencial Deposit! If target address has less than that it will be lost! Press Ctrl+C now to stop!`)
+    await delay(10000);
+  }
   const transfers = [
     api.tx.balances.transfer(config.rewardsDestination.mainDestinationAddress, mainBalance * base),
     api.tx.balances.transferAll(config.rewardsDestination.dustDestinationAddress, false)

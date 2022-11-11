@@ -3,6 +3,6 @@ keystore:
   walletFilePath: config/sample.key.json
   password: "p4ssw0rd"
 rewardsDestination:
-  mainDestinationAddress: XYZ
+  mainDestinationAddress: 1HigsTaXZrCEEWkbUPwD4Rx6XpV7E9fnsom6ZCx42RJnimr # Change this!!
   mainDestinationShare: 80%
-  dustDestinationAddress: YZX
+  dustDestinationAddress: 1HigsTaXZrCEEWkbUPwD4Rx6XpV7E9fnsom6ZCx42RJnimr # Change this!!
