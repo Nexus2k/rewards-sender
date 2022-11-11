@@ -51,13 +51,37 @@ const start = async (args: { config: string }): Promise<void> => {
   // Initialize RPC endpoint.
 	const wsProvider = new WsProvider(config.end_point);
 	const api = await ApiPromise.create({ provider: wsProvider });
-
-	// For each provided entry in the CSV file, execute the balance.
+  
   const { data: balance } = await api.query.system.account(account.address);
-  log.debug(`Account ${account.address} has free balance of: ${balance.free.toHuman()}`)
+  const decimals = api.registry.chainDecimals;
+  const base = 10**Number(decimals)
+  const dm = Number(balance.free) / base
+  log.debug(`Account ${account.address} has free balance of: ${dm} ${api.registry.chainTokens}`)
 
+  // Sending funds to addresses
+  const share = parseFloat(config.rewardsDestination.mainDestinationShare) / 100;
+  log.debug(`Share split: ${share * 100}%`)
+  const mainBalance = (Number(balance.free)/ base) *share;
+  const dustBalance = (Number(balance.free)/ base) * (1-share);
+  log.debug(`Will send ${mainBalance} ${api.registry.chainTokens} to ${config.rewardsDestination.mainDestinationAddress}`)
+  log.debug(`Will send ${dustBalance} ${api.registry.chainTokens} (minus fees) to ${config.rewardsDestination.dustDestinationAddress}`)
+  const transfers = [
+    api.tx.balances.transfer(config.rewardsDestination.mainDestinationAddress, mainBalance * base),
+    api.tx.balances.transferAll(config.rewardsDestination.dustDestinationAddress, false)
+  ];
+  await api.tx.utility
+  .batch(transfers)
+  .signAndSend(account, ({ status }) => {
+    if (status.isInBlock) {
+      console.log(`included in ${status.asInBlock}`);
+    }
+  });
   wsProvider.disconnect();
 };
+
+function delay(ms: number) {
+  return new Promise( resolve => setTimeout(resolve, ms) );
+}
 
 const command = new Command()
   .description("Execute the CSV payouts")
