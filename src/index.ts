@@ -101,12 +101,13 @@ const start = async (args: { config: string }): Promise<void> => {
   const primaryTransfer = available_funds * share;
   const secondaryTransfer = available_funds * (1-share);
 
-  // Abort if primary destination does not have enough ED and the transfer would be below ED.
-  if(primaryDestinationOverED == false && (primaryTransfer < existentialDeposit)){
+  // Abort if any of the destination addresses does not have enough ED and the transfer would be below ED. In the case that we do not send
+  // anything to the address, we can proceed even if it is without ED.
+  if(primaryDestinationOverED == false && (primaryTransfer < existentialDeposit) && primaryTransfer != 0){
     abort();
   }
-  // Abort if secondary destination does not have enough ED and the transfer would be below ED.
-  if(secondaryDestinationOverED == false && (secondaryTransfer < existentialDeposit)){
+
+  if(secondaryDestinationOverED == false && (secondaryTransfer < existentialDeposit) && secondaryTransfer != 0){
     abort();
   }
 
