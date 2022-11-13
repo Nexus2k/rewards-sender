@@ -133,7 +133,7 @@ function delay(ms: number) {
 
 const command = new Command()
   .description("Execute the reward transactions")
-  .option("-c, --config [path]", "Path to config file.", "./config/main.yaml")
+  .option("-c, --config [path]", "Path to config file.", "./config/config.yaml")
   .action(start);
 
 command.parse();
