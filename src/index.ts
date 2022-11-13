@@ -111,7 +111,7 @@ const start = async (args: { config: string }): Promise<void> => {
   }
 
   log.debug(`Will send ${primaryTransfer} ${api.registry.chainTokens} to ${config.rewardsDestination.primaryDestinationAddress}`)
-  log.debug(`Will send ${secondaryTransfer} ${api.registry.chainTokens} (minus fees) to ${config.rewardsDestination.secondaryDestinationAddress}`)
+  log.debug(`Will send ${secondaryTransfer} ${api.registry.chainTokens} to ${config.rewardsDestination.secondaryDestinationAddress}`)
   
   const transfers = [
     api.tx.balances.transfer(config.rewardsDestination.primaryDestinationAddress, primaryTransfer * base),
