@@ -98,8 +98,8 @@ const start = async (args: { config: string }): Promise<void> => {
   // in all cases.
   assert(available_funds >= 0)
 
-  const primaryTransfer = Math.round(available_funds * share,10);
-  const secondaryTransfer = Math.round(available_funds * (1-share),10);
+  const primaryTransfer = available_funds * share;
+  const secondaryTransfer = available_funds * (1-share);
 
   // Abort if any of the destination addresses does not have enough ED and the transfer would be below ED. In the case that we do not send
   // anything to the address, we can proceed even if it is without ED.
@@ -115,8 +115,8 @@ const start = async (args: { config: string }): Promise<void> => {
   log.debug(`Will send ${secondaryTransfer} ${api.registry.chainTokens} to ${config.rewardsDestination.secondaryDestinationAddress}`)
   
   const transfers = [
-    api.tx.balances.transfer(config.rewardsDestination.primaryDestinationAddress, primaryTransfer * base),
-    api.tx.balances.transfer(config.rewardsDestination.secondaryDestinationAddress, secondaryTransfer * base)
+    api.tx.balances.transfer(config.rewardsDestination.primaryDestinationAddress, Math.round(primaryTransfer * base)),
+    api.tx.balances.transfer(config.rewardsDestination.secondaryDestinationAddress, Math.round(secondaryTransfer * base))
   ];
   await api.tx.utility
   .batch(transfers)
