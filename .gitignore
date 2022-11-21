@@ -4,3 +4,4 @@ node_modules/
 config/main.yaml
 config/secret.json
 config/config.yaml
+config/key.json
