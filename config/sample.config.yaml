@@ -1,8 +1,8 @@
 end_point: wss://rpc.polkadot.io
 keystore:
-  walletFilePath: config/sample.key.json
+  walletFilePath: config/key.json
   password: "p4ssw0rd"
 rewardsDestination:
-  mainDestinationAddress: 1HigsTaXZrCEEWkbUPwD4Rx6XpV7E9fnsom6ZCx42RJnimr # Change this!!
-  mainDestinationShare: 80%
-  dustDestinationAddress: 1HigsTaXZrCEEWkbUPwD4Rx6XpV7E9fnsom6ZCx42RJnimr # Change this!!
+  primaryDestinationAddress: 1HigsTaXZrCEEWkbUPwD4Rx6XpV7E9fnsom6ZCx42RJnimr # Change this!!
+  primaryDestinationShare: 80%
+  secondaryDestinationAddress: 1HigsTaXZrCEEWkbUPwD4Rx6XpV7E9fnsom6ZCx42RJnimr # Change this!!
